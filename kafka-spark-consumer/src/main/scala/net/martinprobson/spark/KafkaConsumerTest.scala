@@ -17,6 +17,7 @@ object KafkaConsumerTest extends App with SparkEnv with Logging {
     .option("startingOffsets",conf.getString("kafka.startingOffsets"))
     .option("failOnDataLoss",conf.getString("kafka.fail_on_data_loss"))
     .option("kafka.max.partition.fetch.bytes", "20000000")
+    .option("maxOffsetsPerTrigger",5)
     .load()
     .selectExpr("CAST(key AS STRING)","CAST(value AS STRING)")
     .as[(String,String)]
@@ -24,7 +25,7 @@ object KafkaConsumerTest extends App with SparkEnv with Logging {
 
   // Start running the query that prints the running counts to the console
   val query = lines.writeStream
-    .trigger(Trigger.ProcessingTime("10 minutes"))
+    .trigger(Trigger.ProcessingTime("10 seconds"))
     .foreachBatch{ (batchDf: Dataset[(String,String)], batchId: Long) => {
      val count = batchDf.count
      trace(s"batchDf = $batchDf, count = $count, batchId = $batchId")
