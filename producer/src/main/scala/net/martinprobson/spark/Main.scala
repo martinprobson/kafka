@@ -1,20 +1,23 @@
+package net.martinprobson.spark
+
 import java.util.Properties
-import java.util.concurrent.TimeUnit
 
 import com.typesafe.config.Config
 import grizzled.slf4j.Logging
-import org.apache.kafka.clients.producer.{KafkaProducer, Producer, ProducerRecord}
+import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
 
 object Main extends App with Configured with Logging {
-  println("Main")
+  info("Main")
   trace("LOG TEST")
 
   val producer = new KafkaProducer[String,String](propsFromConfig(conf.getConfig("kafka_producer")))
-  (1 to 1000).foreach(i => {
-    producer.send(new ProducerRecord[String,String]("test",i.toString,i.toString))
+  val topic = conf.getString("topic.name")
+  val msgCount = conf.getInt("topic.message_count")
+  (1 to msgCount).foreach(i => {
+    producer.send(new ProducerRecord[String,String](topic,i.toString,i.toString))
   })
   producer.close()
-  println("Done")
+  info("Done")
 
   /**
     * propsFromConfig - Convert a typesafe config object to a Java properties object.

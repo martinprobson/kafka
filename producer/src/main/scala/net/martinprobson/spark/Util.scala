@@ -1,9 +1,8 @@
+package net.martinprobson.spark
+
 import java.util.Properties
-import java.util.concurrent.TimeUnit
 
 import com.typesafe.config.Config
-import grizzled.slf4j.Logging
-import org.apache.kafka.clients.producer.{KafkaProducer, Producer, ProducerRecord}
 
 object Util {
   /**
