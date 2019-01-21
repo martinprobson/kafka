@@ -7,13 +7,15 @@ import org.apache.spark.sql.streaming.Trigger
 object KafkaConsumerTest extends App with SparkEnv with Logging {
 
   info(s"Starting - $appName  ")
+  val servers = conf.getString("kafka.bootstrap_servers")
+  info(s"kafka.bootstrap.servers = $servers")
 
   import spark.implicits._
   spark.sparkContext.setCheckpointDir("/tmp/checkpoint")
   // Create DataFrame representing the stream of input data from kafka topic.
   val lines = spark.readStream
     .format("kafka")
-    .option("kafka.bootstrap.servers", conf.getString("kafka.bootstrap_servers"))
+    .option("kafka.bootstrap.servers", servers)
     .option("subscribe",conf.getString("kafka.input_topic_name"))
     .option("startingOffsets",conf.getString("kafka.startingOffsets"))
     .option("failOnDataLoss",conf.getString("kafka.fail_on_data_loss"))
@@ -30,8 +32,8 @@ object KafkaConsumerTest extends App with SparkEnv with Logging {
     .option("checkpointLocation", "/tmp/checkpoint")
     .foreachBatch{ (batchDf: Dataset[(String,String)], batchId: Long) => {
      val count = batchDf.count
-      trace(s" Start Key = ${batchDf.first}")
-     trace(s"batchDf = $batchDf, count = $count, batchId = $batchId")
+      println(s" Start Key = ${batchDf.first}")
+     println(s"batchDf = $batchDf, count = $count, batchId = $batchId")
     }}
     .start()
 
