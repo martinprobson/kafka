@@ -1,17 +1,17 @@
-package net.martinprobson.spark
+package com.rakuten.sparktest
 
 import com.typesafe.config.ConfigFactory
 import org.apache.spark.sql.SparkSession
 
 trait SparkEnv {
-  lazy private[spark] val conf = ConfigFactory.load
-  lazy private[spark] val spark = getSession
-  lazy private[spark] val appName = conf.getString("application.name")
+  lazy private[sparktest] val conf = ConfigFactory.load
+  lazy private[sparktest] val spark = getSession
+  lazy private[sparktest] val appName = conf.getString("application.name")
 
   /**
     * Return some information on the environment we are running in.
     */
-  private[spark] def versionInfo: Seq[String] = {
+  private[sparktest] def versionInfo: Seq[String] = {
     val sc = getSession.sparkContext
     val scalaVersion = scala.util.Properties.scalaPropOrElse("version.number", "unknown")
 
@@ -51,7 +51,7 @@ trait SparkEnv {
   /*
 	* Dump spark configuration for the current spark session.
 	*/
-  private[spark] def getAllConf: String = {
+  private[sparktest] def getAllConf: String = {
     getSession.conf.getAll.map { case (k, v) => "Key: [%s] Value: [%s]" format(k, v) } mkString("", "\n", "\n")
   }
 }

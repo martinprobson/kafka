@@ -1,4 +1,4 @@
-package net.martinprobson.spark
+package com.rakuten.sparktest
 
 import grizzled.slf4j.Logging
 import org.apache.spark.sql.Dataset
@@ -20,7 +20,7 @@ object KafkaConsumerTest extends App with SparkEnv with Logging {
     .option("startingOffsets",conf.getString("kafka.startingOffsets"))
     .option("failOnDataLoss",conf.getString("kafka.fail_on_data_loss"))
     .option("kafka.max.partition.fetch.bytes", "20000000")
-    .option("maxOffsetsPerTrigger",500)
+    .option("maxOffsetsPerTrigger",10000000)
     .load()
     .selectExpr("CAST(key AS STRING)","CAST(value AS STRING)")
     .as[(String,String)]
