@@ -10,12 +10,6 @@ val sparkVersion = "2.4.0"
 
 val clouderaVersion = "1.2.0-cdh5.11.2"
 
-resolvers ++= Seq(
-  "Artifactory" at "https://repo.rmgops.com/artifactory/sbt-release/",
-  "cloudera" at "https://repository.cloudera.com/content/repositories/releases/",
-  "cloudera_2" at "https://repository.cloudera.com/artifactory/cloudera-repos/"
-)
-
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % sparkVersion,
   "org.apache.spark" %% "spark-hive" % sparkVersion,

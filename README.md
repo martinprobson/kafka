@@ -20,3 +20,16 @@ For our test purposes, we only need a single node which can be spun up using: -
 ```bash
     docker-compose -f docker-compose-single-broker.yml up
 ``` 
+
+## Producer
+The producer project publishes a set of integers to the Kafka topic specified in configuration (`reference.conf`), the number of
+messages to publish is also specified in configuration. 
+
+## Consumer
+The consumer consumes from the topic and outputs the results to the console.
+
+## Kafka Spark Consumer
+This project uses spark structured streaming to consume from the Kafka topic.
+
+
+Martin Robson 26/01/2019

@@ -39,13 +39,13 @@ trait SparkEnv {
     if (conf.getBoolean("application.hiveSupport"))
       SparkSession.builder
         .appName(appName)
-//        .master("local[*]")
+        .master("local[5]")
         .enableHiveSupport()
         .getOrCreate()
     else
       SparkSession.builder
         .appName(appName)
-//        .master("local[*]")
+        .master("local[5]")
         .getOrCreate()
 
   /*

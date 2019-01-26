@@ -31,9 +31,7 @@ object KafkaConsumerTest extends App with SparkEnv with Logging {
     .trigger(Trigger.ProcessingTime("10 seconds"))
     .option("checkpointLocation", "/tmp/checkpoint")
     .foreachBatch{ (batchDf: Dataset[(String,String)], batchId: Long) => {
-     val count = batchDf.count
-      println(s" Start Key = ${batchDf.first}")
-     println(s"batchDf = $batchDf, count = $count, batchId = $batchId")
+      println(s"batchId = ${batchId} batchDF count = ${batchDf.repartition(100).count()}")
     }}
     .start()
 
