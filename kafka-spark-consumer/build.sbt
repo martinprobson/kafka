@@ -1,7 +1,7 @@
 lazy val root = (project in file("."))
     .settings(
       name := "KafkaConsumerTest",
-      organization := "net.martinprobson.spark",
+      organization := "com.rakuten",
       scalaVersion := "2.11.12",
       version := "0.1"
 )
