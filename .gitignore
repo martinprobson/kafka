@@ -19,6 +19,8 @@ producer/.project
 consumer/.project
 /.project
 /.idea
+/.metals
+/.bsp
 producer/.idea
 consumer/.idea
 /.classpath

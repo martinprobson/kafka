@@ -7,13 +7,20 @@ import org.apache.kafka.clients.consumer.{ConsumerRecords, KafkaConsumer}
 object KafkaConsumer extends App with Configured with Logging {
 
   val consumer = new KafkaConsumer[String, String](propsFromConfig(conf.getConfig("kafka_consumer")))
-  consumer.subscribe(java.util.Arrays.asList("test"))
+  consumer.subscribe(java.util.Arrays.asList("Topic100"))
   var records: ConsumerRecords[String,String] = null
-  while (true) {
-    records = consumer.poll(Duration.ofMillis(100))
+  records = consumer.poll(Duration.ofMillis(1000))
+  records.forEach(r => {
+    println(s"offset: ${r.offset()}, key: ${r.key}, Value: ${r.value}")
+  })
+  var count = records.count()
+  while (!records.isEmpty) {
+    records = consumer.poll(Duration.ofMillis(1000))
     records.forEach(r => {
       println(s"offset: ${r.offset()}, key: ${r.key}, Value: ${r.value}")
     })
+    count = count + records.count()
   }
   consumer.close
+  println(s"Total count = $count")
 }

@@ -10,6 +10,7 @@ libraryDependencies ++= Seq(
   "org.slf4j" % "slf4j-api" % "1.7.5",
   "org.slf4j" % "slf4j-log4j12" % "1.7.5",
   "org.clapper" %% "grizzled-slf4j" % "1.3.1",
+  "org.apache.commons" % "commons-collections4" % "4.4",
   "com.typesafe" % "config" % "1.3.2"
 )
 

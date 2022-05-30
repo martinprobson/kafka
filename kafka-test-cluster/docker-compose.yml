@@ -1,0 +1,92 @@
+version: '2'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+    volumes:
+      - ${KAFKA_DATA}/zookeeper_data:/opt/zookeeper-3.4.13/data
+      - ${KAFKA_DATA}/zookeeper_log:/opt/zookeeper-3.4.13/log
+
+  kafka-1:
+    build: .
+    ports:
+      - "9095:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka1.test.local
+      KAFKA_ADVERTISED_PORT: 9095
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LOG_DIRS: /kafka/logs
+      KAFKA_BROKER_ID: 500
+      KAFKA_CREATE_TOPICS: "test:1:1"
+      KAFKA_offsets_topic_replication_factor: 3
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${KAFKA_DATA}/500:/kafka
+
+  kafka-2:
+    build: .
+    ports:
+      - "9096:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka2.test.local
+      KAFKA_ADVERTISED_PORT: 9096
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LOG_DIRS: /kafka/logs
+      KAFKA_BROKER_ID: 501
+      KAFKA_offsets_topic_replication_factor: 3
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${KAFKA_DATA}/501:/kafka
+
+  kafka-3:
+    build: .
+    ports:
+      - "9097:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka3.test.local
+      KAFKA_ADVERTISED_PORT: 9097
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LOG_DIRS: /kafka/logs
+      KAFKA_BROKER_ID: 502
+      KAFKA_offsets_topic_replication_factor: 3
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${KAFKA_DATA}/502:/kafka
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - 8080:8080
+    depends_on:
+      - zookeeper
+      - kafka-1
+      - kafka-2
+      - kafka-3
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-1:9092,kafka-2:9092,kafka-3:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+
+
+  kafdrop:
+    container_name: kafdrop
+    image: obsidiandynamics/kafdrop
+    ports:
+      - 9010:9000
+    depends_on:
+      - zookeeper
+      - kafka-1
+      - kafka-2
+      - kafka-3
+    environment:
+      KAFKA_BROKERCONNECT: kafka-1:9092,kafka-2:9092,kafka-3:9092
+      JVM_OPTS: -Xms32M -Xmx64M
+      SERVER_SERVLET_CONTEXTPATH: /

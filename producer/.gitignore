@@ -8,6 +8,8 @@
 /.settings
 /derbyDB
 /project
+/.metals
+/.bsp
 package-list
 hadoop.err
 hadoop.out
