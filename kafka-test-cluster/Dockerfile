@@ -1,4 +1,4 @@
-FROM azul/zulu-openjdk-alpine:8u292-8.54.0.21
+FROM azul/zulu-openjdk-alpine:8-latest
 
 ARG kafka_version=2.8.1
 ARG scala_version=2.13
@@ -20,7 +20,7 @@ RUN apk add --no-cache bash curl jq docker \
  && tar xfz /tmp/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -C /opt \
  && rm /tmp/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz \
  && ln -s /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION} ${KAFKA_HOME} \
- && rm /tmp/* \
+ && rm -Rf /tmp/* \
  && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk \
  && apk add --no-cache --allow-untrusted glibc-${GLIBC_VERSION}.apk \
  && rm glibc-${GLIBC_VERSION}.apk

@@ -33,7 +33,7 @@ object Main extends IOApp with Logging {
     */
   def acquire(properties: Properties): IO[KafkaConsumer[String, String]] = for {
     consumer <- IO(new KafkaConsumer[String, String](properties))
-    _ <- IO(consumer.subscribe(java.util.Arrays.asList("Martin4")))
+    _ <- IO(consumer.subscribe(java.util.Arrays.asList("Martin5")))
     _ <- IO(logger.info(s"opening consumer"))
   } yield consumer
 
@@ -50,12 +50,13 @@ object Main extends IOApp with Logging {
   def consume(consumer: KafkaConsumer[String, String], timeout: java.time.Duration): IO[Unit] =
     for {
       records <- IO.blocking(consumer.poll(timeout))
+      _ <- IO(logger.info(s"$consumer consumes ${records.count()}"))
       // Normally the actual processing of the records would go here.
-      _ <- IO(records.forEach(r => {
-        logger.info(s"""offset: ${r.offset()},
-                       | key: ${r.key()},
-                       | value: ${r.value()} ${Thread.currentThread().getName}""".stripMargin)
-      }))
+//      _ <- IO(records.forEach(r => {
+//        logger.info(s"""offset: ${r.offset()},
+//                       | key: ${r.key()},
+//                       | value: ${r.value()} ${Thread.currentThread().getName}""".stripMargin)
+//      }))
       _ <- consume(consumer, timeout)
     } yield ()
 

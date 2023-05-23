@@ -10,6 +10,7 @@
 /project
 /.metals
 /.bsp
+.bloop/
 package-list
 hadoop.err
 hadoop.out

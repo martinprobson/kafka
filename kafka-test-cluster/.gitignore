@@ -16,6 +16,8 @@ logs/*
 .metals/*
 .bloop/
 
+kafka_data/
+
 # eclipse conf file
 .settings
 .classpath
