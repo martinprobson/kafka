@@ -1,4 +1,4 @@
-package com.rakuten.sparktest
+package net.martinprobson.sparktest
 
 import com.typesafe.config.ConfigFactory
 import org.apache.spark.sql.SparkSession

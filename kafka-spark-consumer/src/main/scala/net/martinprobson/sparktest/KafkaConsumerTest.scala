@@ -1,4 +1,4 @@
-package com.rakuten.sparktest
+package net.martinprobson.sparktest
 
 import grizzled.slf4j.Logging
 import org.apache.spark.sql.Dataset
