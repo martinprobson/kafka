@@ -1,14 +1,13 @@
 lazy val root = (project in file("."))
     .settings(
       name := "KafkaConsumerTest",
-      organization := "com.rakuten",
-      scalaVersion := "2.11.12",
+      organization := "net.martinprobson",
+      scalaVersion := "2.13.16",
       version := "0.1"
 )
 
-val sparkVersion = "2.4.0"
+val sparkVersion = "3.5.5"
 
-val clouderaVersion = "1.2.0-cdh5.11.2"
 
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % sparkVersion,
@@ -18,10 +17,10 @@ libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-sql-kafka-0-10" % sparkVersion,
   "org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion,
   "org.apache.kafka" % "kafka-clients" % "0.10.0.0",
-  "org.apache.hadoop" % "hadoop-common" % "2.9.0",
+//  "org.apache.hadoop" % "hadoop-common" % "2.9.0",
   "org.slf4j" % "slf4j-log4j12" % "1.7.25",
-  "org.clapper" %% "grizzled-slf4j" % "1.3.1",
-  "com.typesafe" % "config" % "1.3.2" 
+  "org.clapper" %% "grizzled-slf4j" % "1.3.4",
+  "com.typesafe" % "config" % "1.3.2"
 )
 
 
@@ -32,7 +31,7 @@ assemblyShadeRules in assembly := Seq(
 
 assemblyMergeStrategy in assembly := {
   case PathList("META-INF", xs @ _*) => MergeStrategy.discard
-  case n if n.startsWith("reference.conf") => MergeStrategy.concat 
+  case n if n.startsWith("reference.conf") => MergeStrategy.concat
   case _ => MergeStrategy.first
 }
 
