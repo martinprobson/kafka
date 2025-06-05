@@ -2,21 +2,16 @@
 
 ## Overview
 Setup a test kafka cluster with : -
-* A single zookeeper node.
+* Three controllors
 * Three brokers.
-* A [kafdrop](https://github.com/obsidiandynamics/kafdrop) UI running on port 9010.
 * A [kafka-ui](https://github.com/provectus/kafka-ui) running on port 8080.
 
-## Setup
-The brokers expect a volume mounted pointed to by `$KAFKA_DATA` environment variable. This can be setup in a `.env` file that will be
-used by docker-compose: -
+See "multiple nodes section" [here](https://hub.docker.com/r/apache/kafka)
 
-```
-KAFKA_DATA=<path to a directory on host where topics will be stored>
-```
-
-Then run: -
-
+Run: -
 ```
 docker-compose up -d
 ```
+
+**Note:** The kafka data is created inside the containers so is not saved when the cluster is 
+shutdown.

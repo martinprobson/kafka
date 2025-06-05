@@ -50,13 +50,13 @@ object Main extends IOApp with Logging {
   def consume(consumer: KafkaConsumer[String, String], timeout: java.time.Duration): IO[Unit] =
     for {
       records <- IO.blocking(consumer.poll(timeout))
-      _ <- IO(logger.info(s"$consumer consumes ${records.count()}"))
+      //_ <- IO(logger.info(s"$consumer consumes ${records.count()}"))
       // Normally the actual processing of the records would go here.
-//      _ <- IO(records.forEach(r => {
-//        logger.info(s"""offset: ${r.offset()},
-//                       | key: ${r.key()},
-//                       | value: ${r.value()} ${Thread.currentThread().getName}""".stripMargin)
-//      }))
+      _ <- IO(records.forEach(r => {
+        logger.info(s"""offset: ${r.offset()},
+                       | key: ${r.key()},
+                       | value: ${r.value()} ${Thread.currentThread().getName}""".stripMargin)
+      }))
       _ <- consume(consumer, timeout)
     } yield ()
 
