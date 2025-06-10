@@ -7,7 +7,7 @@ import org.apache.kafka.clients.consumer.{ConsumerRecords, KafkaConsumer}
 object KafkaConsumer extends App with Configured with Logging {
 
   val consumer = new KafkaConsumer[String, String](propsFromConfig(conf.getConfig("kafka_consumer")))
-  consumer.subscribe(java.util.Arrays.asList("Martin5"))
+  consumer.subscribe(java.util.Arrays.asList("Martin6"))
   var records: ConsumerRecords[String,String] = null
   records = consumer.poll(Duration.ofMillis(1000))
   records.forEach(r => {
