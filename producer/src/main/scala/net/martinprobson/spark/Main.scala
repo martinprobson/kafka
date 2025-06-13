@@ -15,6 +15,7 @@ object Main extends App with Configured with Logging {
   val topic = conf.getString("topic.name")
   val msgCount = conf.getInt("topic.message_count")
   (1 to msgCount).foreach(i => {
+    //producer.send(new ProducerRecord[String,String](topic,i.toString,i.toString))
     producer.send(new ProducerRecord[String,String](topic,i.toString,i.toString))
   })
   producer.close()

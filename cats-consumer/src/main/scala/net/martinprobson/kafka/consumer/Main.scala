@@ -33,7 +33,7 @@ object Main extends IOApp with Logging {
     */
   def acquire(properties: Properties): IO[KafkaConsumer[String, String]] = for {
     consumer <- IO(new KafkaConsumer[String, String](properties))
-    _ <- IO(consumer.subscribe(java.util.Arrays.asList("Martin6")))
+    _ <- IO(consumer.subscribe(java.util.Arrays.asList("Test2")))
     _ <- IO(logger.info(s"opening consumer"))
   } yield consumer
 
