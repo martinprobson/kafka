@@ -2,7 +2,7 @@ package net.martinprobson.sparktest
 
 import grizzled.slf4j.Logging
 import org.apache.spark.sql.Dataset
-import org.apache.spark.sql.streaming.Trigger
+import org.apache.spark.sql.streaming.{OutputMode, Trigger}
 
 object KafkaConsumerTest extends App with SparkEnv with Logging {
 
@@ -11,9 +11,10 @@ object KafkaConsumerTest extends App with SparkEnv with Logging {
   info(s"kafka.bootstrap.servers = $servers")
 
   import spark.implicits._
+  spark.sparkContext.setLogLevel("WARN")
   spark.sparkContext.setCheckpointDir("/tmp/checkpoint")
   // Create DataFrame representing the stream of input data from kafka topic.
-  val lines = spark.readStream
+  val input = spark.readStream
     .format("kafka")
     .option("kafka.bootstrap.servers", servers)
     .option("subscribe",conf.getString("kafka.input_topic_name"))
@@ -27,11 +28,11 @@ object KafkaConsumerTest extends App with SparkEnv with Logging {
 
 
   // Start running the query that prints the running counts to the console
-  val query = lines.writeStream
+  val query = input.writeStream
     .trigger(Trigger.ProcessingTime("10 seconds"))
     .option("checkpointLocation", "/tmp/checkpoint")
     .foreachBatch{ (batchDf: Dataset[(String,String)], batchId: Long) => {
-      println(s"batchId = ${batchId} batchDF count = ${batchDf.repartition(100).count()}")
+      println(s"batchId = ${batchId} batchDF count = ${batchDf.count()}")
     }}
     .start()
 
